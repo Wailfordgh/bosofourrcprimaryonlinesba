@@ -42,7 +42,9 @@
                         'pulse': 'pulse 1.5s infinite',
                         'sparkle': 'sparkle 2s infinite',
                         'rotate': 'rotate 4s linear infinite',
-                        'fadeInUp': 'fadeInUp 1s ease-out'
+                        'fadeInUp': 'fadeInUp 1s ease-out',
+                        'bounce': 'bounce 2s infinite',
+                        'slideUp': 'slideUp 0.8s ease-out'
                     },
                     keyframes: {
                         float: {
@@ -64,6 +66,10 @@
                         },
                         fadeInUp: {
                             '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(50px)' },
                             '100%': { opacity: '1', transform: 'translateY(0)' }
                         }
                     }
@@ -184,12 +190,6 @@
         .sidebar-menu a span {
             margin-right: 10px;
             font-size: 18px; /* Larger icons for mobile */
-        }
-        
-        .sidebar-menu a.disabled {
-            opacity: 0.5;
-            pointer-events: none;
-            cursor: not-allowed;
         }
         
         /* Main content area - mobile first */
@@ -533,308 +533,220 @@
             }
         }
 
-        /* Login Form Styles */
-        .login-container {
+        /* Android Launcher Styles */
+        .launcher-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.8), rgba(44, 62, 80, 0.9)), url('https://imgur.com/yRahdbO.jpg') center/cover;
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.9), rgba(44, 62, 80, 0.95)), url('https://imgur.com/yRahdbO.jpg') center/cover;
             z-index: 2000;
             perspective: 1000px;
-        }
-        
-        .login-form {
-            width: 90%;
-            max-width: 400px;
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-            transform-style: preserve-3d;
-            animation: formAppear 0.8s ease-out forwards;
             overflow: hidden;
-            position: relative;
         }
         
-        .dark .login-form {
-            background-color: rgba(34, 34, 34, 0.9);
-            color: #e0e0e0;
+        .dark .launcher-container {
+            background: linear-gradient(135deg, rgba(24, 24, 24, 0.9), rgba(44, 62, 80, 0.95)), url('https://imgur.com/yRahdbO.jpg') center/cover;
         }
         
-        @keyframes formAppear {
-            0% {
-                opacity: 0;
-                transform: rotateX(-10deg) translateY(30px);
-            }
-            100% {
-                opacity: 1;
-                transform: rotateX(0) translateY(0);
-            }
-        }
-        
-        .login-header {
+        .launcher-content {
             text-align: center;
-            margin-bottom: 25px;
+            animation: slideUp 0.8s ease-out forwards;
+            z-index: 10;
         }
         
-        .login-header img {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 15px;
-            animation: logoFloat 3s ease-in-out infinite;
+        .launcher-logo {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 30px;
+            border-radius: 25px;
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), 0 0 50px rgba(52, 152, 219, 0.4);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            animation: float 3s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
         }
         
-        @keyframes logoFloat {
-            0%, 100% {
-                transform: translateY(0) scale(1);
-            }
-            50% {
-                transform: translateY(-10px) scale(1.05);
-            }
+        .launcher-logo::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #3498db, #2ecc71, #e74c3c, #f39c12);
+            border-radius: 25px;
+            z-index: -1;
+            animation: rotate 4s linear infinite;
         }
         
-        .login-header h2 {
-            font-size: 1.5rem;
-            color: #2c3e50;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-        
-        .dark .login-header h2 {
-            color: #e0e0e0;
-        }
-        
-        .login-header p {
-            color: #7f8c8d;
-            font-size: 0.9rem;
-        }
-        
-        .dark .login-header p {
-            color: #bdc3c7;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
+        .launcher-logo img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+            z-index: 2;
             position: relative;
         }
         
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-            color: #34495e;
-            font-weight: 500;
-            transition: all 0.3s;
+        .launcher-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            letter-spacing: -0.5px;
         }
         
-        .dark .form-group label {
-            color: #bdc3c7;
+        .launcher-subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 40px;
+            line-height: 1.6;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
-        .form-group input[type="text"],
-        .form-group input[type="password"],
-        .form-group select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-            background-color: rgba(255, 255, 255, 0.9);
+        .get-started-btn {
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
             color: #2c3e50;
-            transition: all 0.3s;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            min-width: 200px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
         
-        .dark .form-group input[type="text"],
-        .dark .form-group input[type="password"],
-        .dark .form-group select {
-            background-color: rgba(52, 73, 94, 0.2);
-            border-color: #34495e;
-            color: #e0e0e0;
-        }
-        
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.3);
-        }
-        
-        .form-icon {
-            position: absolute;
-            right: 15px;
-            top: 40px;
-            color: #95a5a6;
-            transition: all 0.3s;
-        }
-        
-        .form-group input:focus + .form-icon,
-        .form-group select:focus + .form-icon {
-            color: #3498db;
-        }
-        
-        .login-btn {
-            width: 100%;
-            padding: 12px;
+        .get-started-btn:hover, .get-started-btn:focus {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
             background: linear-gradient(135deg, #3498db, #2980b9);
             color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
+        }
+        
+        .get-started-btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .launcher-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 20px;
+            margin-top: 50px;
+            max-width: 600px;
+            width: 100%;
+            padding: 0 20px;
+        }
+        
+        .feature-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
             transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
-        .login-btn:hover, .login-btn:focus {
-            background: linear-gradient(135deg, #2980b9, #2c3e50);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(52, 152, 219, 0.5);
+        .feature-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
         }
         
-        .login-btn:active {
-            transform: translateY(1px);
-            box-shadow: 0 2px 10px rgba(52, 152, 219, 0.3);
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
         }
         
-        .login-options {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 15px;
-            font-size: 0.85rem;
+        .feature-text {
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
         }
         
-        .form-check {
-            display: flex;
-            align-items: center;
-        }
-        
-        .form-check input {
-            margin-right: 5px;
-        }
-        
-        .forget-password {
-            color: #3498db;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-        
-        .forget-password:hover {
-            color: #2980b9;
-            text-decoration: underline;
-        }
-        
-        .login-bubbles {
+        .floating-elements {
             position: absolute;
             width: 100%;
             height: 100%;
-            top: 0;
-            left: 0;
             overflow: hidden;
             pointer-events: none;
-            z-index: -1;
         }
         
-        .bubble {
+        .floating-element {
             position: absolute;
-            background-color: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
-            animation: float 4s infinite ease-in-out;
-            opacity: 0.5;
+            animation: floatRandom 8s infinite ease-in-out;
         }
         
-        .bubble:nth-child(1) {
+        .floating-element:nth-child(1) {
             width: 60px;
             height: 60px;
-            bottom: -30px;
+            top: 20%;
             left: 10%;
-            animation-duration: 6s;
-            animation-delay: 0.2s;
+            animation-delay: 0s;
         }
         
-        .bubble:nth-child(2) {
+        .floating-element:nth-child(2) {
             width: 40px;
             height: 40px;
-            bottom: 40%;
-            right: 10%;
-            animation-duration: 8s;
-            animation-delay: 0.5s;
+            top: 60%;
+            right: 15%;
+            animation-delay: -2s;
         }
         
-        .bubble:nth-child(3) {
+        .floating-element:nth-child(3) {
             width: 80px;
             height: 80px;
-            top: -40px;
-            right: 20%;
-            animation-duration: 7s;
-            animation-delay: 0.8s;
+            bottom: 30%;
+            left: 20%;
+            animation-delay: -4s;
         }
         
-        .bubble:nth-child(4) {
+        .floating-element:nth-child(4) {
             width: 50px;
             height: 50px;
-            top: 30%;
-            left: -25px;
-            animation-duration: 5s;
-            animation-delay: 1s;
+            top: 80%;
+            right: 30%;
+            animation-delay: -6s;
         }
         
-        @keyframes float {
+        @keyframes floatRandom {
             0%, 100% {
                 transform: translateY(0) rotate(0deg);
+                opacity: 0.3;
+            }
+            25% {
+                transform: translateY(-20px) rotate(90deg);
+                opacity: 0.6;
             }
             50% {
-                transform: translateY(-20px) rotate(5deg);
+                transform: translateY(10px) rotate(180deg);
+                opacity: 0.9;
             }
-        }
-        
-        .login-error {
-            background-color: rgba(231, 76, 60, 0.2);
-            border-left: 4px solid #e74c3c;
-            color: #e74c3c;
-            padding: 10px 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-            display: none;
-            animation: shakeError 0.5s ease-in-out;
-        }
-        
-        @keyframes shakeError {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            50% { transform: translateX(10px); }
-            75% { transform: translateX(-10px); }
-        }
-        
-        .role-indicator {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background-color: #3498db;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 15px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            display: none;
-        }
-        
-        .role-indicator.admin {
-            background-color: #e74c3c;
-        }
-        
-        .role-indicator.teacher {
-            background-color: #2ecc71;
+            75% {
+                transform: translateY(-10px) rotate(270deg);
+                opacity: 0.4;
+            }
         }
         
         /* Media Queries for larger screens */
@@ -938,6 +850,24 @@
                     transform: translate(60px, 60px) rotate(360deg) translate(-60px, -60px) translate(60px, 0);
                 }
             }
+            
+            .launcher-logo {
+                width: 180px;
+                height: 180px;
+            }
+            
+            .launcher-title {
+                font-size: 3.5rem;
+            }
+            
+            .launcher-subtitle {
+                font-size: 1.3rem;
+            }
+            
+            .launcher-features {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 30px;
+            }
         }
         
         /* Special accommodations for extra small screens */
@@ -976,6 +906,25 @@
                 margin: 0 3px;
                 font-size: 9px;
             }
+            
+            .launcher-logo {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .launcher-title {
+                font-size: 2rem;
+            }
+            
+            .launcher-subtitle {
+                font-size: 1rem;
+                padding: 0 20px;
+            }
+            
+            .launcher-features {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
         }
     </style>
 </head>
@@ -993,54 +942,48 @@
         <div class="loader-text">TechLaw Softwares.....</div>
     </div>
 
-    <!-- Login Container -->
-    <div class="login-container" id="loginContainer">
-        <div class="login-form">
-            <div class="login-bubbles">
-                <div class="bubble"></div>
-                <div class="bubble"></div>
-                <div class="bubble"></div>
-                <div class="bubble"></div>
+    <!-- Android Launcher Container -->
+    <div class="launcher-container" id="launcherContainer">
+        <div class="floating-elements">
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+        </div>
+        
+        <div class="launcher-content">
+            <div class="launcher-logo">
+                <img src="https://imgur.com/pd0P4zq.png" alt="OSBA Logo">
             </div>
-            <div class="login-header">
-                <img src="https://imgur.com/pd0P4zq.png" alt="Login Logo">
-                <h2>Welcome Back, Dear Teacher</h2>
-                <p>Sign in to access your account</p>
+            
+            <h1 class="launcher-title">Bosofour R/C Primary A</h1>
+            <p class="launcher-subtitle">
+                Welcome to the Online School Base Assessment System. 
+                A comprehensive platform for academic excellence and student management.
+            </p>
+            
+            <button class="get-started-btn" id="getStartedBtn">
+                Get Started
+            </button>
+            
+            <div class="launcher-features">
+                <div class="feature-item">
+                    <span class="feature-icon">📊</span>
+                    <div class="feature-text">Student Scores</div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">👨‍🎓</span>
+                    <div class="feature-text">Student Management</div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">📄</span>
+                    <div class="feature-text">Reports & Analytics</div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">📋</span>
+                    <div class="feature-text">Broadsheet</div>
+                </div>
             </div>
-            <div class="login-error" id="loginError">
-                Invalid username or password. Please try again.
-            </div>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
-                    <span class="form-icon">👤</span>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                    <span class="form-icon">🔒</span>
-                </div>
-                <div class="form-group">
-                    <label for="role">Role</label>
-                    <select id="role" name="role" required>
-                        <option value="">Select your role</option>
-                        <option value="admin">Administrator</option>
-                        <option value="teacher">Teacher</option>
-                    </select>
-                    <span class="form-icon">👥</span>
-                </div>
-                <button type="submit" class="login-btn" id="loginButton">
-                    Sign In
-                </button>
-                <div class="login-options">
-                    <div class="form-check">
-                        <input type="checkbox" id="remember" name="remember">
-                        <label for="remember">Remember me</label>
-                    </div>
-                    <a href="#" class="forget-password">Forgot Password?</a>
-                </div>
-            </form>
         </div>
     </div>
 
@@ -1052,17 +995,16 @@
         <div class="sidebar-header">
             <img src="https://imgur.com/W1yot1l.png" alt="Logo" class="sidebar-logo">
             <h3>Bosofour R/C Primary</h3>
-            <div class="role-indicator" id="roleIndicator">Admin</div>
         </div>
         
         <div class="sidebar-menu">
             <a href="#" data-page="home" class="active"><span>🏠</span> Dashboard</a>
-            <a href="#" data-page="scores" data-src="https://script.google.com/a/macros/st.vvu.edu.gh/s/AKfycbwtI-0t-sQ_KKvLKCHf73lCET-8bO7WDlxsUudZfiiiecMK3HnVHppDjJ6pO3w4TlzLSA/exec"><span>📊</span> Scores</a>
+            <a href="#" data-page="scores" data-src="https://script.google.com/a/macros/st.vvu.edu.gh/s/AKfycbyJCEQRrJSLFAVD6RsKd9ID005kahBvDr50Q_Wc7n5tpAXK5T0AqUjdHbx5RYCvJ1fuMg/exec"><span>📊</span> Scores</a>
             <a href="#" data-page="students" data-src="https://script.google.com/a/macros/st.vvu.edu.gh/s/AKfycbzDrc9hHva91UD32LjutebYNaS9Qkj4nXouw_w_iKixXNts4i_7ZvqfoICIjmLSyJS_UA/exec"><span>👨‍🎓</span> Students</a>
             <a href="#" data-page="student-reports" data-src="https://script.google.com/a/macros/st.vvu.edu.gh/s/AKfycbzPmXX_nR8_nEpPM_hOOkT9Gtn0xaTljttM-EDRCgz3n-etOrFTteevH11LVpDpOnTHaw/exec"><span>📄</span> Student Reports</a>
-            <a href="#" data-page="broadsheet" data-src="https://script.google.com/a/macros/st.vvu.edu.gh/s/AKfycbw-np8sZnW7ADBo_2sot2_XJ_5APBuWI2lnR__X2ACJhQLc3vVz2QdyikhtbmQLFYGYgg/exec" class="admin-only"><span>📄</span> Broadsheet</a>
-            <a href="#" data-page="results-analysis" data-src="https://script.google.com/a/macros/st.vvu.edu.gh/s/AKfycbzDY3HXQD7AKJjWdZOwPQ7vkUJJFrxdRxL7NOxSatHLVgaeUeqwg3fo4MknoevHJPmdsA/exec" class="admin-only"><span>📄</span> Results Analysis</a>
-            <a href="#" id="logoutBtn"><span>🚪</span> Logout</a>
+            <a href="#" data-page="broadsheet" data-src="https://script.google.com/a/macros/st.vvu.edu.gh/s/AKfycbw-np8sZnW7ADBo_2sot2_XJ_5APBuWI2lnR__X2ACJhQLc3vVz2QdyikhtbmQLFYGYgg/exec"><span>📄</span> Broadsheet</a>
+            <a href="#" data-page="results-analysis" data-src="https://script.google.com/a/macros/st.vvu.edu.gh/s/AKfycbzDY3HXQD7AKJjWdZOwPQ7vkUJJFrxdRxL7NOxSatHLVgaeUeqwg3fo4MknoevHJPmdsA/exec"><span>📄</span> Results Analysis</a>
+            <a href="#" id="backToLauncherBtn"><span>🏠</span> Back to Home</a>
         </div>
     </div>
 
@@ -1143,133 +1085,94 @@
             const quickLinkButtons = document.querySelectorAll('.quick-link-card button');
             const loaderContainer = document.getElementById('loaderContainer');
             const footer = document.getElementById('footer');
-            const loginContainer = document.getElementById('loginContainer');
-            const loginForm = document.getElementById('loginForm');
-            const loginError = document.getElementById('loginError');
-            const roleIndicator = document.getElementById('roleIndicator');
-            const logoutBtn = document.getElementById('logoutBtn');
-            const adminOnlyElements = document.querySelectorAll('.admin-only');
-            
-            let currentUserRole = null;
+            const launcherContainer = document.getElementById('launcherContainer');
+            const getStartedBtn = document.getElementById('getStartedBtn');
+            const backToLauncherBtn = document.getElementById('backToLauncherBtn');
             
             // Check if device is mobile
             const isMobile = window.innerWidth < 768;
             
-            // Hide main content until login
+            // Hide main content until launcher interaction
             sidebar.style.display = 'none';
             content.style.display = 'none';
             toggleBtn.style.display = 'none';
             footer.style.display = 'none';
             
-            // Login form submit handling
-            loginForm.addEventListener('submit', function(e) {
-                e.preventDefault();
+            // Get Started button click handler
+            getStartedBtn.addEventListener('click', function() {
+                // Add ripple effect
+                const ripple = document.createElement('div');
+                ripple.classList.add('ripple');
+                ripple.style.width = ripple.style.height = Math.max(this.offsetWidth, this.offsetHeight) + 'px';
+                this.appendChild(ripple);
                 
-                const username = document.getElementById('username').value;
-                const password = document.getElementById('password').value;
-                const role = document.getElementById('role').value;
+                // Position the ripple
+                const rect = this.getBoundingClientRect();
+                ripple.style.left = (event.clientX - rect.left - ripple.offsetWidth / 2) + 'px';
+                ripple.style.top = (event.clientY - rect.top - ripple.offsetHeight / 2) + 'px';
                 
-                // Simple validation - in a real app, this would be server-side
-                if ((username === 'admin' && password === 'admin123' && role === 'admin') || 
-                    (username === 'teacher' && password === 'teacher123' && role === 'teacher')) {
+                // Remove ripple element after animation completes
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+                
+                // Show loader during "initialization"
+                launcherContainer.style.display = 'none';
+                loaderContainer.style.display = 'flex';
+                loaderContainer.style.opacity = '1';
+                
+                // Simulate loading delay
+                setTimeout(function() {
+                    // Show main interface
+                    sidebar.style.display = 'block';
+                    content.style.display = 'block';
+                    toggleBtn.style.display = 'flex';
+                    footer.style.display = 'flex';
                     
-                    // Show loader during "authentication"
-                    loginContainer.style.display = 'none';
-                    loaderContainer.style.display = 'flex';
-                    loaderContainer.style.opacity = '1';
-                    
-                    // Set current user role
-                    currentUserRole = role;
-                    
-                    // Update role indicator
-                    roleIndicator.textContent = role.charAt(0).toUpperCase() + role.slice(1);
-                    roleIndicator.classList.add(role);
-                    roleIndicator.style.display = 'block';
-                    
-                    // Handle access control for admin-only features
-                    if (role === 'admin') {
-                        adminOnlyElements.forEach(item => {
-                            item.classList.remove('disabled');
-                        });
+                    // Initialize sidebar state based on device
+                    if (isMobile) {
+                        sidebar.classList.remove('active');
+                        toggleBtn.textContent = '☰';
                     } else {
-                        adminOnlyElements.forEach(item => {
-                            item.classList.add('disabled');
-                        });
+                        sidebar.classList.add('active');
+                        toggleBtn.textContent = '✖';
                     }
                     
-                    // Simulate loading delay for authentication
-                    setTimeout(function() {
-                        // Show main interface
-                        sidebar.style.display = 'block';
-                        content.style.display = 'block';
-                        toggleBtn.style.display = 'flex';
-                        footer.style.display = 'flex';
-                        
-                        // Initialize sidebar state based on device
-                        if (isMobile) {
-                            sidebar.classList.remove('active');
-                            toggleBtn.textContent = '☰';
-                        } else {
-                            sidebar.classList.add('active');
-                            toggleBtn.textContent = '✖';
-                        }
-                        
-                        // Hide loader
-                        loaderContainer.style.opacity = '0';
-                        setTimeout(() => {
-                            loaderContainer.style.display = 'none';
-                        }, 500);
-                        
-                        // Show welcome animation on dashboard
-                        const logoContainer = document.querySelector('.logo-container');
-                        logoContainer.style.transform = 'scale(1.1)';
-                        setTimeout(() => {
-                            logoContainer.style.transform = '';
-                        }, 600);
-                    }, 2000);
-                } else {
-                    // Show error for invalid credentials
-                    loginError.style.display = 'block';
-                    loginError.style.animation = 'none';
-                    void loginError.offsetWidth; // Trigger reflow
-                    loginError.style.animation = 'shakeError 0.5s ease-in-out';
+                    // Hide loader
+                    loaderContainer.style.opacity = '0';
+                    setTimeout(() => {
+                        loaderContainer.style.display = 'none';
+                    }, 500);
                     
-                    // Add vibration effect if supported
-                    if (navigator.vibrate) {
-                        navigator.vibrate([100, 50, 100]);
-                    }
-                    
-                    // Clear password field
-                    document.getElementById('password').value = '';
-                }
+                    // Show welcome animation on dashboard
+                    const logoContainer = document.querySelector('.logo-container');
+                    logoContainer.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        logoContainer.style.transform = '';
+                    }, 600);
+                }, 2000);
             });
             
-            // Logout functionality
-            logoutBtn.addEventListener('click', function(e) {
+            // Back to Launcher functionality
+            backToLauncherBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 
-                // Show loader during "logout"
+                // Show loader during "transition"
                 loaderContainer.style.display = 'flex';
                 loaderContainer.style.opacity = '1';
                 
                 setTimeout(function() {
-                    // Reset form fields
-                    loginForm.reset();
-                    loginError.style.display = 'none';
-                    
                     // Hide main interface
                     sidebar.style.display = 'none';
                     content.style.display = 'none';
                     toggleBtn.style.display = 'none';
                     footer.style.display = 'none';
                     
-                    // Reset user role
-                    currentUserRole = null;
-                    roleIndicator.style.display = 'none';
-                    roleIndicator.classList.remove('admin', 'teacher');
+                    // Show launcher
+                    launcherContainer.style.display = 'flex';
                     
-                    // Show login form
-                    loginContainer.style.display = 'flex';
+                    // Reset to home page
+                    switchPage('home');
                     
                     // Hide loader
                     loaderContainer.style.opacity = '0';
@@ -1419,13 +1322,6 @@
             
             // Enhanced page switching
             function switchPage(pageId) {
-                // Check role-based access control
-                if ((pageId === 'broadsheet' || pageId === 'results-analysis') && currentUserRole !== 'admin') {
-                    // Show access denied message or redirect
-                    alert('Access Denied: This feature is only available to administrators.');
-                    return;
-                }
-                
                 // Show loader
                 loaderContainer.style.display = 'flex';
                 loaderContainer.style.opacity = '1';
@@ -1521,14 +1417,8 @@
                 item.addEventListener('click', function(e) {
                     e.preventDefault();
                     
-                    // Skip if this is the logout button
-                    if (this.id === 'logoutBtn') return;
-                    
-                    // Skip if disabled (for teacher trying to access admin features)
-                    if (this.classList.contains('disabled')) {
-                        alert('Access Denied: This feature is only available to administrators.');
-                        return;
-                    }
+                    // Skip if this is the back to launcher button
+                    if (this.id === 'backToLauncherBtn') return;
                     
                     const pageId = this.getAttribute('data-page');
                     switchPage(pageId);
@@ -1557,13 +1447,6 @@
                     }, 600);
                     
                     const pageId = this.getAttribute('data-page');
-                    
-                    // Check role-based access control
-                    if ((pageId === 'broadsheet' || pageId === 'results-analysis') && currentUserRole !== 'admin') {
-                        // Show access denied message
-                        alert('Access Denied: This feature is only available to administrators.');
-                        return;
-                    }
                     
                     // Make sidebar visible on mobile
                     if (isMobile && !sidebar.classList.contains('active')) {
@@ -1621,30 +1504,6 @@
             setTheme();
             
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', setTheme);
-            
-            // Floating bubbles animation for login form
-            function createLoginBubbles() {
-                const bubbles = document.querySelectorAll('.bubble');
-                bubbles.forEach(bubble => {
-                    // Add random initial positions
-                    bubble.style.left = `${Math.random() * 100}%`;
-                    bubble.style.top = `${Math.random() * 100}%`;
-                });
-            }
-            
-            createLoginBubbles();
-            
-            // Toggle password visibility
-            document.querySelector('.form-icon').addEventListener('click', function() {
-                const passwordInput = document.getElementById('password');
-                if (passwordInput.type === 'password') {
-                    passwordInput.type = 'text';
-                    this.textContent = '👁️';
-                } else {
-                    passwordInput.type = 'password';
-                    this.textContent = '🔒';
-                }
-            });
             
             // Handle touch events for improved mobile experience
             document.addEventListener('touchstart', function() {
